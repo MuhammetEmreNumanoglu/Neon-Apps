@@ -1,13 +1,15 @@
 "use client";
 
-import { StaffCard } from '@/components/StaffCard';
-import { staffData } from '@/data/staff';
-import { Button } from '@/components/ui/button';
+import { StaffCard } from '../components/StaffCard';
+import { staffData } from '../data/staff';
+import { Button } from '../components/ui/button';
 import { useTheme } from 'next-themes';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
   const { theme, setTheme } = useTheme();
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -25,13 +27,20 @@ export default function Home() {
             Meet our talented team members
           </p>
           {mounted && (
-            <Button
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              variant="outline"
-              className="mb-8"
-            >
-              Toggle {theme === 'dark' ? 'Light' : 'Dark'} Mode
-            </Button>
+            <div className="flex gap-4 justify-center mb-8">
+              <Button
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                variant="outline"
+              >
+                Toggle {theme === 'dark' ? 'Light' : 'Dark'} Mode
+              </Button>
+              <Button
+                onClick={() => router.push('/login')}
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
+              >
+                Login
+              </Button>
+            </div>
           )}
         </header>
 

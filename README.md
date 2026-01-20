@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+React hook formun kontrolü sevmesinin sebebi : her seferinde her harfte kontrol edilir ise iş yükü artıyor böylece yorucu oluyor. Büyük formlarda acayip performans farkı sağlar . 
+useState , onChange , value kontrollüdürler.
+Submit olunca bilgileri DOM’dan tek seferde ref kullanarak alıyor. 
 
-First, run the development server:
+@neonapps.com ile bittiğini kontrol etmesi için email in endsWith ini kontrol ediyoruz.
+Regex ile de kontrol edebiliriz (teknofest projemde büyük ihtimalle regex kullanmıştım)
+Refine ile zorunluluk ekliyoruz.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Parse alarm veriyor . Çalışmayı durduruyor.Bu yüzden backend, abi girişlerinde , configlerde kullanılmalı . Çünkü bir hata varsa hiç çalışmasın isteriz.(try-catch)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+safeParse ise form validation , kullanıcıdan gelen veri ve tasarım konusunda daha faydalı olur. Hata mesajlarını kendimiz okuyup düzeltiriz .(if-else)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Regex = ^[^\s@]+@[^\s@]+\.[^\s@]+$
+[^\s@]+    = kullanıcı adı demek
+@     = bildiğimiz @
+[^\s@]+     = domain adı
+\.     = bildiğimiz nokta
+[^\s@]+     = com vs.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+Yaptıklarım : 
+TypeScript tanım
+Kurulum
+Temel tipler
+Any kullanımı 
+Union types 
+Literal types
+Array
+Object
+İnterface ve type kullanımı 
+Optinal types
+Function
+Generic types
+Inheritance
+Partial ,required , Readonly, pick , omit
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Enumlar Read onlydir değeri değiştirilemez. 
