@@ -1,10 +1,9 @@
-'use client';
-
 import { useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Eye, EyeOff, Mail, Lock, Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -16,17 +15,10 @@ import {
   FormLabel,
   FormMessage,
 } from './ui/form';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from './ui/dialog';
 import { toast } from 'sonner';
 
 import { authService, type LoginCredentials } from '../lib/auth';
+import { useAuthStore } from '../stores/auth';
 
 // Zod validation schema
 const loginSchema = z.object({
@@ -51,6 +43,8 @@ export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const emailRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+  const login = useAuthStore((state) => state.login);
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -72,12 +66,12 @@ export function LoginForm() {
     try {
       const response = await authService.login(data);
 
-      if (response.success) {
+      if (response.success && response.user) {
+        login(response.user);
         toast.success('Login successful!', {
-          description: `Welcome back, ${response.user?.name}!`,
+          description: `Welcome back, ${response.user.name}!`,
         });
-        // In a real app, you would redirect here
-        console.log('Login successful:', response.user);
+        router.push('/');
       } else {
         toast.error('Login failed', {
           description: response.message || 'Invalid credentials',
@@ -167,35 +161,6 @@ export function LoginForm() {
               </FormItem>
             )}
           />
-
-          <div className="flex items-center justify-between">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="link" className="px-0 font-normal">
-                  Forgot password?
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Reset Password</DialogTitle>
-                  <DialogDescription>
-                    Enter your email address and we'll send you a link to reset your password.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="space-y-4">
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      type="email"
-                      placeholder="your.name@neonapps.com"
-                      className="pl-10"
-                    />
-                  </div>
-                  <Button className="w-full">Send Reset Link</Button>
-                </div>
-              </DialogContent>
-            </Dialog>
-          </div>
 
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? (
