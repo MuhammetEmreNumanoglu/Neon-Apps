@@ -1,38 +1,11 @@
+Redux = prop drillingin engellenip bir yerdeki bilgiye her yerden erişebilmek için , app componentini store a bağlarız ve store a her yerden erişim sağlanır. 
 
-React hook formun kontrolü sevmesinin sebebi : her seferinde her harfte kontrol edilir ise iş yükü artıyor böylece yorucu oluyor. Büyük formlarda acayip performans farkı sağlar . 
-useState , onChange , value kontrollüdürler.
-Submit olunca bilgileri DOM’dan tek seferde ref kullanarak alıyor. 
+Zustand= State i normal bir javascript objesi gibi yazıp react hook olarak kullanıyoruz . temel mantığı bilgiyi direkt olarak çekebiliyor . Provider ,distpatch ve reducer kullanmaya gerek kalmıyor . daha kolay . Ama bilinmesi gereken şey her bilgiyi diyeyim farklı bir fonksiyon içinde yazmamız lazım .eğer ki tek fonksiyonda yazarsak , 1 i bile değişse hepsi render ediliyor gereksiz yük biniyor . 
 
-@neonapps.com ile bittiğini kontrol etmesi için email in endsWith ini kontrol ediyoruz.
-Regex ile de kontrol edebiliriz (teknofest projemde büyük ihtimalle regex kullanmıştım)
-Refine ile zorunluluk ekliyoruz.
+Reduxın öğrenmesi zaman alır .Ama debugta kolaylık sağlar
+zustand öğrenmesi kolay olsa da disiplin geliştiriciye kalıyor.
 
-Parse alarm veriyor . Çalışmayı durduruyor.Bu yüzden backend, abi girişlerinde , configlerde kullanılmalı . Çünkü bir hata varsa hiç çalışmasın isteriz.(try-catch)
+RBAC Frontend de bir kişinin o sayfaya erişimi var mı diye kontrol edilir . ProtectedRoute + auth guard ile güvenlik daha da fazla olur. 
+Admin olmayan kullanıcı admin panelini göremez.
 
-safeParse ise form validation , kullanıcıdan gelen veri ve tasarım konusunda daha faydalı olur. Hata mesajlarını kendimiz okuyup düzeltiriz .(if-else)
-
-Regex = ^[^\s@]+@[^\s@]+\.[^\s@]+$
-[^\s@]+    = kullanıcı adı demek
-@     = bildiğimiz @
-[^\s@]+     = domain adı
-\.     = bildiğimiz nokta
-[^\s@]+     = com vs.
-
-
-Yaptıklarım : 
-TypeScript tanım
-Kurulum
-Temel tipler
-Any kullanımı 
-Union types 
-Literal types
-Array
-Object
-İnterface ve type kullanımı 
-Optinal types
-Function
-Generic types
-Inheritance
-Partial ,required , Readonly, pick , omit
-
-Enumlar Read onlydir değeri değiştirilemez. 
+Storedaki state i localStorage a otomatik kaydeder ve sayfa yenilenince localStorage'tan geri yükler . Mesela dark mode light modda local storagetaki bilgiler gerekiyor ki light mode da iken sayfa yenilendiğinde dark mode a tekrar geçmesin.

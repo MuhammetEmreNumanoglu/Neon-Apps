@@ -12,6 +12,7 @@ export default function LoginPage() {
   useEffect(() => {
     if (hydrated && isAuthenticated) {
       router.push('/');
+      return;
     }
   }, [hydrated, isAuthenticated, router]);
 
@@ -24,7 +25,11 @@ export default function LoginPage() {
   }
 
   if (isAuthenticated) {
-    return null;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    );
   }
 
   return (

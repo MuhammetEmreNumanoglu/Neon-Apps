@@ -2,14 +2,14 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '../stores/auth';
 import { useTheme } from 'next-themes';
-import { useHasRole } from '../hooks/useAuth';
 import { Moon, Sun, User, LogOut } from 'lucide-react';
 import { Button } from './ui/button';
 
 export interface MenuItem {
   label: string;
   href: string;
-  roles?: ('Admin' | 'Employee')[];
+  // Örn: ['settings'], ['staff'], ['settings','staff']
+  permissions?: string[];
   icon?: React.ComponentType<{ className?: string }>;
 }
 
@@ -27,9 +27,22 @@ export function Sidebar({ menuItems }: SidebarProps) {
     router.push('/login');
   };
 
-  const filteredMenuItems = menuItems.filter(item => {
-    if (!item.roles) return true;
-    return item.roles.some(role => useHasRole(role));
+  const filteredMenuItems = menuItems.filter((item) => {
+    if (!user) return false;
+    const userPermissions = user.permissions ?? [];
+
+    // Menü item'ında izin tanımlı değilse herkes görebilsin (ör: Home)
+    if (!item.permissions || item.permissions.length === 0) {
+      return true;
+    }
+
+    // Admin her şeyi görebilsin
+    if (userPermissions.includes('admin')) {
+      return true;
+    }
+
+    // Örn: sadece 'settings' varsa sadece Settings, sadece 'staff' varsa sadece Staff
+    return item.permissions.some((p) => userPermissions.includes(p));
   });
 
   return (

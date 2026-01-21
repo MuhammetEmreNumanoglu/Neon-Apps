@@ -10,9 +10,12 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 const menuItems = [
-  { label: 'Home', href: '/', roles: ['Admin' as const, 'Employee' as const], icon: Home },
-  { label: 'Staff', href: '/staff', roles: ['Admin' as const, 'Employee' as const], icon: Users },
-  { label: 'Settings', href: '/settings', roles: ['Admin' as const], icon: Settings },
+  // Home: herkes görebilsin, o yüzden permissions tanımlamıyoruz
+  { label: 'Home', href: '/', icon: Home },
+  // Sadece 'staff' yetkisi olanlar (ve admin) görebilsin
+  { label: 'Staff', href: '/staff', permissions: ['staff'], icon: Users },
+  // Sadece 'settings' yetkisi olanlar (ve admin) görebilsin
+  { label: 'Settings', href: '/settings', permissions: ['settings'], icon: Settings },
 ];
 
 export default function HomePage() {

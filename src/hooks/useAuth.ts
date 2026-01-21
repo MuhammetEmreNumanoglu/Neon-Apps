@@ -1,10 +1,14 @@
 import { useAuthStore } from '../stores/auth';
 
-export function useHasRole(requiredRole: 'Admin' | 'Employee'): boolean {
+export function useHasPermission(permission: string): boolean {
   const { user } = useAuthStore();
-  if (!user) return false;
-  if (requiredRole === 'Admin') return user.role === 'Admin';
-  return true; // Employee role allows access to employee features
+  if (!user || !user.permissions) return false;
+  return user.permissions.includes(permission);
+}
+
+export function useHasRole(role: 'Admin' | 'Employee'): boolean {
+  const { user } = useAuthStore();
+  return !!user && user.role === role;
 }
 
 export function useCanAccessSettings(): boolean {

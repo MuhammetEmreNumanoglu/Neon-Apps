@@ -4,6 +4,7 @@ export interface StaffMember {
   email: string;
   dept: string;
   zodiac: string;
+  permissions: string[];
 }
 
 export interface StaffData {

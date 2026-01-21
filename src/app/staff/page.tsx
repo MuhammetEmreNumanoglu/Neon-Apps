@@ -7,9 +7,9 @@ import { Sidebar } from '../../components/Sidebar';
 import { Home, Users, Settings } from 'lucide-react';
 
 const menuItems = [
-  { label: 'Home', href: '/', roles: ['Admin' as const, 'Employee' as const], icon: Home },
-  { label: 'Staff', href: '/staff', roles: ['Admin' as const, 'Employee' as const], icon: Users },
-  { label: 'Settings', href: '/settings', roles: ['Admin' as const], icon: Settings },
+  { label: 'Home', href: '/', icon: Home },
+  { label: 'Staff', href: '/staff', permissions: ['staff'], icon: Users },
+  { label: 'Settings', href: '/settings', permissions: ['settings'], icon: Settings },
 ];
 
 export default function StaffPage() {
