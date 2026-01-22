@@ -20,13 +20,13 @@ export default function SettingsPage() {
           <Header />
           <main className="flex-1 p-6 overflow-auto">
             <div className="max-w-7xl mx-auto">
-              <h1 className="text-4xl font-bold text-foreground mb-4">
+              <h1 className="text-4xl text-black font-bold  mb-4">
                 Settings
               </h1>
-              <p className="text-lg text-muted-foreground mb-6">
+              <p className="text-lg text-black mb-6">
                 Admin settings
               </p>
-              <div className="p-4 border rounded-lg">
+              <div className="p-4 border rounded-lg text-black">
                 <p>Settings page content here</p>
               </div>
             </div>

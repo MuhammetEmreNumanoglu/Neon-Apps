@@ -31,7 +31,7 @@ export function Header() {
   return (
     <header className="border-b bg-card">
       <div className="flex h-16 items-center px-6 justify-between">
-        <h1 className="text-xl text-black dark:text-white font-semibold">NeonApps Dashboard</h1>
+        <h1 className="text-xl text-black dark:text-white font-semibold">Dashboard</h1>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

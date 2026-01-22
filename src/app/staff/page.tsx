@@ -21,17 +21,17 @@ export default function StaffPage() {
           <Header />
           <main className="flex-1 p-6 overflow-auto">
             <div className="max-w-7xl mx-auto">
-              <h1 className="text-4xl font-bold text-foreground mb-4">
+              <h1 className="text-4xl font-bold text-black mb-4">
                 Staff Management
               </h1>
-              <p className="text-lg text-muted-foreground mb-6">
+              <p className="text-lg text-black mb-6">
                 Manage staff members
               </p>
               <div className="grid grid-cols-1 gap-4">
                 {staffData.members.map((member) => (
-                  <div key={member.id} className="p-4 border rounded-lg">
+                  <div key={member.id} className="p-4 border rounded-lg text-black">
                     <h3 className="font-semibold">{member.name}</h3>
-                    <p className="text-sm text-muted-foreground">{member.email}</p>
+                    <p className="text-sm ">{member.email}</p>
                     <p className="text-sm">{member.dept}</p>
                   </div>
                 ))}

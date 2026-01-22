@@ -1,11 +1,16 @@
-Redux = prop drillingin engellenip bir yerdeki bilgiye her yerden erişebilmek için , app componentini store a bağlarız ve store a her yerden erişim sağlanır. 
+Compound Component Pattern : 
+Model ın , dropdown , tabi , accordion ,Toggle ın veya tabın açılıp kapanması için her şeyin 1 ana bileşen içerisinde yazılmasıdır . 
+Örnek: 
+<Toggle>
+  <Toggle.Button />
+  <Toggle.On />
+  <Toggle.Off />
+</Toggle>
 
-Zustand= State i normal bir javascript objesi gibi yazıp react hook olarak kullanıyoruz . temel mantığı bilgiyi direkt olarak çekebiliyor . Provider ,distpatch ve reducer kullanmaya gerek kalmıyor . daha kolay . Ama bilinmesi gereken şey her bilgiyi diyeyim farklı bir fonksiyon içinde yazmamız lazım .eğer ki tek fonksiyonda yazarsak , 1 i bile değişse hepsi render ediliyor gereksiz yük biniyor . 
+Normale göre okunurluğu artıyor . 
+Ve hepsi ortak hafızadan çalışır . Provider ile ana bileşendeki on ,off , value değerleri childrenlara aktarılır . 
 
-Reduxın öğrenmesi zaman alır .Ama debugta kolaylık sağlar
-zustand öğrenmesi kolay olsa da disiplin geliştiriciye kalıyor.
+CVA = Class Variance Authority
+Aynı komponent içinde farklı varyasyonlar oluşturmaya yarıyor . Otomatik type güvenliği sağlanıyor .
 
-RBAC Frontend de bir kişinin o sayfaya erişimi var mı diye kontrol edilir . ProtectedRoute + auth guard ile güvenlik daha da fazla olur. 
-Admin olmayan kullanıcı admin panelini göremez.
-
-Storedaki state i localStorage a otomatik kaydeder ve sayfa yenilenince localStorage'tan geri yükler . Mesela dark mode light modda local storagetaki bilgiler gerekiyor ki light mode da iken sayfa yenilendiğinde dark mode a tekrar geçmesin.
+Asıl amaç projenin içinde kendimize bir kütüphane oluşturuyoruz. Böylece her seferinde buton , input vs gibi eventlara tek tek style vermek durumunda kalmıyoruz
