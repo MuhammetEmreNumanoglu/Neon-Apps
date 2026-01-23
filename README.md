@@ -1,16 +1,17 @@
-Compound Component Pattern : 
-Model ın , dropdown , tabi , accordion ,Toggle ın veya tabın açılıp kapanması için her şeyin 1 ana bileşen içerisinde yazılmasıdır . 
-Örnek: 
-<Toggle>
-  <Toggle.Button />
-  <Toggle.On />
-  <Toggle.Off />
-</Toggle>
+GÜN-5
 
-Normale göre okunurluğu artıyor . 
-Ve hepsi ortak hafızadan çalışır . Provider ile ana bileşendeki on ,off , value değerleri childrenlara aktarılır . 
+Multi step formslarda kullanıcı geri yaptığında verilerin kaybolmaması çok önemlidir. 
+Mantığı veriyi tek yerde tut, sadece değişeni güncelle, step bazlı doğrula, gereksiz re-render yapma ve gerekirse global store kullanırız.veriler bu projede zustandde saklanıyor
 
-CVA = Class Variance Authority
-Aynı komponent içinde farklı varyasyonlar oluşturmaya yarıyor . Otomatik type güvenliği sağlanıyor .
 
-Asıl amaç projenin içinde kendimize bir kütüphane oluşturuyoruz. Böylece her seferinde buton , input vs gibi eventlara tek tek style vermek durumunda kalmıyoruz
+Nested loop (iç içe objeler) varsa: ya JSON.stringify ile hücreye yazarız ya da “flatten” ederiz.
+Utf 8 + Türkçe Excell için bazen \uFEFF (BOM) eklememiz gerekebilir. 
+Büyük veri (10k+ satır) için: işlem süresini azaltmak adına kolonları sabitlemek ve mümkünse Web Worker kullanmak iyi olur.
+Template i de genel olarak hazır template zaten.
+
+
+Sayfayı yenileyince düz from sayfasına gitmemek için ?step= sayı ekliyoruz ki hangi sayfada refresh atılırsa o sayfadan devam ederiz . 
+
+/form?step=1
+/form?step=2
+/form?step=3

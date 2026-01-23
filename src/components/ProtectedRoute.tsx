@@ -20,7 +20,7 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
     }
 
     if (hydrated && requiredRole && user) {
-      const hasAccess = requiredRole === 'Admin' ? user.role === 'Admin' : true;
+      const hasAccess = user.role === requiredRole;
       if (!hasAccess) {
         router.push('/');
         return;
@@ -41,7 +41,7 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
   }
 
   if (requiredRole && user) {
-    const hasAccess = requiredRole === 'Admin' ? user.role === 'Admin' : true;
+    const hasAccess = user.role === requiredRole;
     if (!hasAccess) {
       return null;
     }

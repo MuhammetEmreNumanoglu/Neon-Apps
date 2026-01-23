@@ -63,6 +63,10 @@ export function LoginForm() {
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
+
+    // 1.5 saniye bekleme süresi
+    await new Promise(resolve => setTimeout(resolve, 1500));
+
     try {
       const response = await authService.login(data);
 

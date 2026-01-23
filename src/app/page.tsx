@@ -38,6 +38,7 @@ import { toast } from 'sonner';
 
 const menuItems = [
   { label: 'Home', href: '/', icon: Home },
+  { label: 'Onboarding', href: '/onboarding', icon: FileText },
   { label: 'Staff', href: '/staff', permissions: ['staff'], icon: Users },
   { label: 'Settings', href: '/settings', permissions: ['settings'], icon: Settings },
 ];
