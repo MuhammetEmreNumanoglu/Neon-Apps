@@ -44,7 +44,6 @@ const eventTypeConfig = {
 };
 
 export function ActivityFeed({ events, className, maxItems }: ActivityFeedProps) {
-    // Sort events by timestamp (newest first)
     const sortedEvents = React.useMemo(() => {
         const sorted = [...events].sort(
             (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
@@ -69,12 +68,10 @@ export function ActivityFeed({ events, className, maxItems }: ActivityFeedProps)
 
                 return (
                     <div key={event.id} className="relative flex gap-3">
-                        {/* Timeline line */}
                         {!isLast && (
                             <div className="absolute left-5 top-11 bottom-0 w-px bg-border" />
                         )}
 
-                        {/* Icon */}
                         <div
                             className={cn(
                                 "relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full",
@@ -84,7 +81,6 @@ export function ActivityFeed({ events, className, maxItems }: ActivityFeedProps)
                             <Icon className={cn("size-4", config.iconColor)} strokeWidth={2} />
                         </div>
 
-                        {/* Content */}
                         <div className="flex-1 space-y-1 pt-1">
                             <div className="flex items-start justify-between gap-2">
                                 <div>

@@ -34,7 +34,6 @@ const initialState = {
     }
 };
 
-// Zustand store with localStorage persistence
 export const useOnboardingStore = create<OnboardingState>()(
     persist(
         (set, get) => ({
@@ -74,7 +73,7 @@ export const useOnboardingStore = create<OnboardingState>()(
             reset: () => set(initialState)
         }),
         {
-            name: 'onboarding-storage', // localStorage key
+            name: 'onboarding-storage',
             storage: createJSONStorage(() => localStorage),
         }
     )

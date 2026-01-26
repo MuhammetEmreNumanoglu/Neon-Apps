@@ -20,7 +20,6 @@ import { toast } from 'sonner';
 import { authService, type LoginCredentials } from '../lib/auth';
 import { useAuthStore } from '../stores/auth';
 
-// Zod validation schema
 const loginSchema = z.object({
   email: z
     .string()
@@ -54,7 +53,6 @@ export function LoginForm() {
     },
   });
 
-  // Auto-focus email field on mount
   useEffect(() => {
     if (emailRef.current) {
       emailRef.current.focus();
@@ -64,7 +62,6 @@ export function LoginForm() {
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
 
-    // 1.5 saniye bekleme süresi
     await new Promise(resolve => setTimeout(resolve, 1500));
 
     try {

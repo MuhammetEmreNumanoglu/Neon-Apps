@@ -19,7 +19,6 @@ export function Breadcrumb({
 }: BreadcrumbProps) {
     const pathname = usePathname();
 
-    // Generate breadcrumb items from pathname
     const breadcrumbs = React.useMemo(() => {
         const paths = pathname.split("/").filter(Boolean);
 
@@ -27,7 +26,6 @@ export function Breadcrumb({
             { label: homeLabel, href: "/", isHome: true },
             ...paths.map((path, index) => {
                 const href = `/${paths.slice(0, index + 1).join("/")}`;
-                // Capitalize and format the label
                 const label = path
                     .split("-")
                     .map(word => word.charAt(0).toUpperCase() + word.slice(1))

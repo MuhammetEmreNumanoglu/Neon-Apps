@@ -35,7 +35,6 @@ interface QuickActionsProps {
 }
 
 export function QuickActions({ actions, userRole, className }: QuickActionsProps) {
-    // Filter actions based on user role
     const visibleActions = actions.filter(
         (action) => !action.adminOnly || userRole === "Admin"
     );
@@ -60,4 +59,3 @@ export function QuickActions({ actions, userRole, className }: QuickActionsProps
 }
 
 export type { QuickAction };
-

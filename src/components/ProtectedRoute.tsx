@@ -7,9 +7,10 @@ import { useAuthStore } from '../stores/auth';
 interface ProtectedRouteProps {
   children: React.ReactNode;
   requiredRole?: 'Admin' | 'Employee';
+  requiredPermissions?: string[];
 }
 
-export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) {
+export function ProtectedRoute({ children, requiredRole, requiredPermissions }: ProtectedRouteProps) {
   const { isAuthenticated, user, hydrated } = useAuthStore();
   const router = useRouter();
 
@@ -19,14 +20,26 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
       return;
     }
 
-    if (hydrated && requiredRole && user) {
-      const hasAccess = user.role === requiredRole;
-      if (!hasAccess) {
-        router.push('/');
-        return;
+    if (hydrated && user) {
+      if (requiredRole) {
+        const hasRole = user.role === requiredRole;
+        if (!hasRole) {
+          router.push('/');
+          return;
+        }
+      }
+
+      if (requiredPermissions && requiredPermissions.length > 0) {
+        const hasPermission = user.permissions?.some(permission =>
+          requiredPermissions.includes(permission)
+        );
+        if (!hasPermission) {
+          router.push('/');
+          return;
+        }
       }
     }
-  }, [isAuthenticated, user, requiredRole, router, hydrated]);
+  }, [isAuthenticated, user, requiredRole, requiredPermissions, router, hydrated]);
 
   if (!hydrated) {
     return (
@@ -40,10 +53,21 @@ export function ProtectedRoute({ children, requiredRole }: ProtectedRouteProps) 
     return null;
   }
 
-  if (requiredRole && user) {
-    const hasAccess = user.role === requiredRole;
-    if (!hasAccess) {
-      return null;
+  if (user) {
+    if (requiredRole) {
+      const hasRole = user.role === requiredRole;
+      if (!hasRole) {
+        return null;
+      }
+    }
+
+    if (requiredPermissions && requiredPermissions.length > 0) {
+      const hasPermission = user.permissions?.some(permission =>
+        requiredPermissions.includes(permission)
+      );
+      if (!hasPermission) {
+        return null;
+      }
     }
   }
 

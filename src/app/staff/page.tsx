@@ -4,18 +4,19 @@ import { staffData } from '../../data/staff';
 import { ProtectedRoute } from '../../components/ProtectedRoute';
 import { Header } from '../../components/Header';
 import { Sidebar } from '../../components/Sidebar';
-import { Home, Users, Settings, FileText } from 'lucide-react';
+import { Home, Users, Settings, FileText, Database } from 'lucide-react';
 
 const menuItems = [
   { label: 'Home', href: '/', icon: Home },
   { label: 'Onboarding', href: '/onboarding', icon: FileText },
   { label: 'Staff', href: '/staff', permissions: ['staff'], icon: Users },
+  { label: 'Data', href: '/data-demo', icon: Database },
   { label: 'Settings', href: '/settings', permissions: ['settings'], icon: Settings },
 ];
 
 export default function StaffPage() {
   return (
-    <ProtectedRoute>
+    <ProtectedRoute requiredPermissions={["staff"]}>
       <div className="flex h-screen">
         <Sidebar menuItems={menuItems} />
         <div className="flex-1 flex flex-col">

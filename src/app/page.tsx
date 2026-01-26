@@ -23,8 +23,10 @@ import {
   Megaphone,
   FolderOpen,
   Calendar,
-  Clock
+  Clock,
+  Database
 } from 'lucide-react';
+
 import { useAuthStore } from '../stores/auth';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -40,6 +42,7 @@ const menuItems = [
   { label: 'Home', href: '/', icon: Home },
   { label: 'Onboarding', href: '/onboarding', icon: FileText },
   { label: 'Staff', href: '/staff', permissions: ['staff'], icon: Users },
+  { label: 'Data', href: '/data-demo', icon: Database },
   { label: 'Settings', href: '/settings', permissions: ['settings'], icon: Settings },
 ];
 
@@ -67,7 +70,6 @@ export default function HomePage() {
 
   const userRole = user?.role || 'Employee';
 
-  // Quick actions configuration
   const quickActions: QuickAction[] = [
     {
       id: '1',
@@ -99,7 +101,6 @@ export default function HomePage() {
     },
   ];
 
-  // Format date helper
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {
       month: 'short',
@@ -108,7 +109,6 @@ export default function HomePage() {
     }).format(date);
   };
 
-  // Get priority badge variant
   const getPriorityVariant = (priority: string) => {
     switch (priority) {
       case 'high':
@@ -120,7 +120,6 @@ export default function HomePage() {
     }
   };
 
-  // Get status badge color
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'active':
@@ -141,10 +140,8 @@ export default function HomePage() {
         <Header />
         <main className="flex-1 p-6 overflow-auto bg-background">
           <div className="max-w-7xl mx-auto space-y-6">
-            {/* Breadcrumb */}
             <Breadcrumb />
 
-            {/* Page Header */}
             <div className="space-y-2">
               <h1 className="text-4xl font-bold text-foreground">
                 Welcome back, {user?.name?.split(' ')[0] || 'User'}!
@@ -154,10 +151,8 @@ export default function HomePage() {
               </p>
             </div>
 
-            {/* Quick Actions */}
             <QuickActions actions={quickActions} userRole={userRole} />
 
-            {/* Stats Section */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               <StatCard>
                 <StatCard.Icon>
@@ -196,9 +191,7 @@ export default function HomePage() {
               </StatCard>
             </div>
 
-            {/* Main Content Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Announcements Section */}
               <div className="lg:col-span-1">
                 <Card>
                   <CardHeader>
@@ -236,7 +229,6 @@ export default function HomePage() {
                 </Card>
               </div>
 
-              {/* Active Projects Section */}
               <div className="lg:col-span-2">
                 <Card>
                   <CardHeader>
@@ -269,7 +261,6 @@ export default function HomePage() {
                           </div>
                         </div>
 
-                        {/* Progress Bar */}
                         <div className="mb-3">
                           <div className="flex items-center justify-between mb-1">
                             <span className="text-xs font-medium">Progress</span>
@@ -302,7 +293,6 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Activity Feed Section */}
             <Card>
               <CardHeader>
                 <div className="flex items-center gap-2">

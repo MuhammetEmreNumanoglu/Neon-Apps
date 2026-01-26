@@ -3,7 +3,7 @@
 import { ProtectedRoute } from '../../components/ProtectedRoute';
 import { Header } from '../../components/Header';
 import { Sidebar } from '../../components/Sidebar';
-import { Home, Users, Settings, FileText, Bell, Shield, Palette, Globe } from 'lucide-react';
+import { Home, Users, Settings, FileText, Bell, Shield, Palette, Globe, Database } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../components/ui/card';
 import { Switch } from '../../components/ui/switch';
 import { Label } from '../../components/ui/label';
@@ -14,19 +14,19 @@ const menuItems = [
   { label: 'Home', href: '/', icon: Home },
   { label: 'Onboarding', href: '/onboarding', icon: FileText },
   { label: 'Staff', href: '/staff', permissions: ['staff'], icon: Users },
+  { label: 'Data', href: '/data-demo', icon: Database },
   { label: 'Settings', href: '/settings', permissions: ['settings'], icon: Settings },
 ];
 
 export default function SettingsPage() {
   return (
-    <ProtectedRoute requiredRole="Admin">
+    <ProtectedRoute requiredPermissions={["settings"]}>
       <div className="flex h-screen">
         <Sidebar menuItems={menuItems} />
         <div className="flex-1 flex flex-col">
           <Header />
           <main className="flex-1 p-6 overflow-auto bg-background">
             <div className="max-w-4xl mx-auto space-y-6">
-              {/* Page Header */}
               <div>
                 <h1 className="text-4xl font-bold text-foreground mb-2">
                   Settings
@@ -36,7 +36,6 @@ export default function SettingsPage() {
                 </p>
               </div>
 
-              {/* Notifications Settings */}
               <Card>
                 <CardHeader>
                   <div className="flex items-center gap-2">
@@ -84,7 +83,6 @@ export default function SettingsPage() {
                 </CardContent>
               </Card>
 
-              {/* Security Settings */}
               <Card>
                 <CardHeader>
                   <div className="flex items-center gap-2">
@@ -120,7 +118,6 @@ export default function SettingsPage() {
                 </CardContent>
               </Card>
 
-              {/* Appearance Settings */}
               <Card>
                 <CardHeader>
                   <div className="flex items-center gap-2">
@@ -156,7 +153,6 @@ export default function SettingsPage() {
                 </CardContent>
               </Card>
 
-              {/* Language & Region */}
               <Card>
                 <CardHeader>
                   <div className="flex items-center gap-2">
@@ -192,7 +188,6 @@ export default function SettingsPage() {
                 </CardContent>
               </Card>
 
-              {/* Danger Zone */}
               <Card className="border-destructive/50">
                 <CardHeader>
                   <CardTitle className="text-destructive">Danger Zone</CardTitle>

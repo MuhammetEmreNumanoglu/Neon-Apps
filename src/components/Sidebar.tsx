@@ -8,7 +8,6 @@ import { Button } from './ui/button';
 export interface MenuItem {
   label: string;
   href: string;
-  // Örn: ['settings'], ['staff'], ['settings','staff']
   permissions?: string[];
   icon?: React.ComponentType<{ className?: string }>;
 }
@@ -31,17 +30,14 @@ export function Sidebar({ menuItems }: SidebarProps) {
     if (!user) return false;
     const userPermissions = user.permissions ?? [];
 
-    // Menü item'ında izin tanımlı değilse herkes görebilsin (ör: Home)
     if (!item.permissions || item.permissions.length === 0) {
       return true;
     }
 
-    // Admin her şeyi görebilsin
     if (userPermissions.includes('admin')) {
       return true;
     }
 
-    // Örn: sadece 'settings' varsa sadece Settings, sadece 'staff' varsa sadece Staff
     return item.permissions.some((p) => userPermissions.includes(p));
   });
 
