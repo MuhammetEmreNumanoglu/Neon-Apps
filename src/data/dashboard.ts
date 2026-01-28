@@ -1,4 +1,4 @@
-import { ActivityEvent } from "../components/ActivityFeed";
+import { ActivityEvent } from "../components/DashboardComponents";
 
 export interface Announcement {
     id: string;

@@ -1,20 +1,7 @@
 /**
  * LoginForm Component
  * 
- * Kullanıcı giriş formu bileşeni. React Hook Form ve Zod validation kullanır.
- * 
- * Özellikler:
- * - Email ve şifre doğrulama (@neonapps.com zorunluluğu)
- * - Şifre görünürlük toggle (göster/gizle)
- * - Otomatik email inputu odaklama
- * - Loading state ile kullanıcı geri bildirimi
- * - Toast bildirimleri (başarılı/başarısız giriş)
- * - Auth store entegrasyonu
- * - Başarılı girişte ana sayfaya yönlendirme
- * 
- * Validasyon Kuralları:
- * - Email: @neonapps.com ile bitmeli
- * - Şifre: En az 8 karakter, 1 büyük harf, 1 özel karakter içermeli
+ * Basit, guvenli ve kullanici dostu giris formu.
  */
 import { useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -22,37 +9,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Eye, EyeOff, Mail, Lock, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from './ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form';
 import { toast } from 'sonner';
-
-import { authService, type LoginCredentials } from '../lib/auth';
+import { authService } from '../lib/auth';
 import { useAuthStore } from '../stores/auth';
 
-// Login form için Zod validasyon şeması
 const loginSchema = z.object({
-  email: z
-    .string()
-    .min(1, 'Email is required')
-    .email('Invalid email address')
-    .refine((email) => email.endsWith('@neonapps.com'), {
-      message: 'Email must end with @neonapps.com',
-    }),
-  password: z
-    .string()
-    .min(1, 'Password is required')
-    .min(8, 'Password must be at least 8 characters')
-    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-    .regex(/[!@#$%^&*(),.?":{}|<>]/, 'Password must contain at least one special character'),
+  email: z.string().email('Invalid email').refine(e => e.endsWith('@neonapps.com'), 'Must be @neonapps.com'),
+  password: z.string().min(8, 'Min 8 chars'),
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
@@ -66,57 +32,36 @@ export function LoginForm() {
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
+    defaultValues: { email: '', password: '' },
   });
 
-  useEffect(() => {
-    if (emailRef.current) {
-      emailRef.current.focus();
-    }
-  }, []);
+  useEffect(() => emailRef.current?.focus(), []);
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
-
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    await new Promise(r => setTimeout(r, 1000)); // Simule bekleme
 
     try {
       const response = await authService.login(data);
-
       if (response.success && response.user) {
         login(response.user);
-        toast.success('Login successful!', {
-          description: `Welcome back, ${response.user.name}!`,
-        });
+        toast.success(`Welcome back, ${response.user.name}!`);
         router.push('/');
       } else {
-        toast.error('Login failed', {
-          description: response.message || 'Invalid credentials',
-        });
+        toast.error(response.message || 'Login failed');
       }
-    } catch (error) {
-      toast.error('Login failed', {
-        description: 'An unexpected error occurred',
-      });
+    } catch (e) {
+      toast.error('Unexpected error occurred');
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
   };
 
   return (
     <div className="w-full max-w-md mx-auto space-y-6">
       <div className="text-center space-y-2">
         <h1 className="text-3xl font-bold">Welcome Back</h1>
-        <p className="text-muted-foreground">
-          Sign in to your NeonApps account
-        </p>
+        <p className="text-muted-foreground">Sign in to your NeonApps account</p>
       </div>
 
       <Form {...form}>
@@ -127,19 +72,10 @@ export function LoginForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      {...field}
-                      ref={emailRef}
-                      type="email"
-                      placeholder="your.name@neonapps.com"
-                      className="pl-10"
-                      disabled={isLoading}
-                    />
-                  </div>
-                </FormControl>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input {...field} ref={emailRef} type="email" placeholder="email@neonapps.com" className="pl-10" disabled={isLoading} />
+                </div>
                 <FormMessage />
               </FormItem>
             )}
@@ -151,46 +87,24 @@ export function LoginForm() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      {...field}
-                      type={showPassword ? 'text' : 'password'}
-                      placeholder="Enter your password"
-                      className="pl-10 pr-10"
-                      disabled={isLoading}
-                    />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                      onClick={togglePasswordVisibility}
-                      disabled={isLoading}
-                    >
-                      {showPassword ? (
-                        <EyeOff className="h-4 w-4 text-muted-foreground" />
-                      ) : (
-                        <Eye className="h-4 w-4 text-muted-foreground" />
-                      )}
-                    </Button>
-                  </div>
-                </FormControl>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                  <Input {...field} type={showPassword ? 'text' : 'password'} placeholder="••••••••" className="pl-10 pr-10" disabled={isLoading} />
+                  <Button
+                    type="button" variant="ghost" size="sm"
+                    className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
+                    onClick={() => setShowPassword(!showPassword)} disabled={isLoading}
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </Button>
+                </div>
                 <FormMessage />
               </FormItem>
             )}
           />
 
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Signing in...
-              </>
-            ) : (
-              'Sign In'
-            )}
+            {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Signing in...</> : 'Sign In'}
           </Button>
         </form>
       </Form>

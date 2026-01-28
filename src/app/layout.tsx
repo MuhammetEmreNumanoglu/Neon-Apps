@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "../components/theme-provider";
 import { Toaster } from "../components/ui/sonner";
 import { QueryProvider } from "../components/QueryProvider";
+import { ScrollToTopButton } from "../components/ScrollToTopButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +40,7 @@ export default function RootLayout({
           >
             {children}
             <Toaster />
+            <ScrollToTopButton />
           </ThemeProvider>
         </QueryProvider>
       </body>
