@@ -1,3 +1,21 @@
+/**
+ * OnboardingForm Full Version Component
+ * 
+ * Gelişmiş özelliklere sahip 3 adımlı onboarding formu bileşeni.
+ * 
+ * Adımlar:
+ * 1. Identity (Kimlik Bilgileri) - Ad, Soyad, Burç
+ * 2. Professional (Profesyonel Bilgiler) - Departman, Rol
+ * 3. Confirmation (Onay) - Bilgilerin gözden geçirilmesi ve CSV indirme
+ * 
+ * Gelişmiş Özellikler:
+ * - URL ile adım senkronizasyonu (?step=1, ?step=2, ?step=3)
+ * - Sayfa yenileme uyarısı (beforeunload event)
+ * - Ana sayfaya dönüş butonu
+ * - İlerleme çubuğu ve adım göstergeleri
+ * - Zustand state yönetimi
+ * - Gradient başlık ve animasyonlar
+ */
 "use client";
 
 import { useEffect } from 'react';

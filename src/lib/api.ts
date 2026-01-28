@@ -1,6 +1,6 @@
 import axiosInstance from './axios';
 import { getZodiacSignBySeed } from './zodiacSigns';
-import { User, UserWithZodiac, Post } from '@/types/api';
+import { User, UserWithZodiac, Post } from '@/interface/api';
 
 export async function fetchUsers(): Promise<UserWithZodiac[]> {
     const response = await axiosInstance.get<User[]>('/users');

@@ -1,17 +1,56 @@
-GÜN-5
+TanStack Query (React Query: Frontendin sahibi olmadığı sunucudan gelen veriyi yönetir .
 
-Multi step formslarda kullanıcı geri yaptığında verilerin kaybolmaması çok önemlidir. 
-Mantığı veriyi tek yerde tut, sadece değişeni güncelle, step bazlı doğrula, gereksiz re-render yapma ve gerekirse global store kullanırız.veriler bu projede zustandde saklanıyor
+Server state : 
+Sunucuda yaşayan 
+Asenkron yapılardır (async-await)
+Bilgiler güncel olmayabilir 
+Bu verinin ne zaman değiştiğini frontend bilemez. Kontrol sunucudadır.
+
+Örnek:
+API response’ları (/users, /orders)
+Giriş yapmış kullanıcı bilgisi
+Dashboard istatistikleri
+Sayfalı / filtreli liste verileri
 
 
-Nested loop (iç içe objeler) varsa: ya JSON.stringify ile hücreye yazarız ya da “flatten” ederiz.
-Utf 8 + Türkçe Excell için bazen \uFEFF (BOM) eklememiz gerekebilir. 
-Büyük veri (10k+ satır) için: işlem süresini azaltmak adına kolonları sabitlemek ve mümkünse Web Worker kullanmak iyi olur.
-Template i de genel olarak hazır template zaten.
+Client State (İstemci Durumu):
+Sadece tarayıcıda yaşayan
+Tamamen senin kontrolünde olan
+Kullanıcı etkileşimiyle değişen veriler
+
+Örnek:
+Modal açık / kapalı
+Form input değerleri
+Dark / light tema
+Stepper adımı
 
 
-Sayfayı yenileyince düz from sayfasına gitmemek için ?step= sayı ekliyoruz ki hangi sayfada refresh atılırsa o sayfadan devam ederiz . 
+Problem ise şudur :
+Serverda error , cache gibi şeyler olur böyleyece her seferinde data güncel mi değil mi diye fazla sorgu olunca sistem yorulur . 
 
-/form?step=1
-/form?step=2
-/form?step=3
+Tanstack ise  UI state tutmaz.
+Sadece sunucudan gelen verinin yaşam döngüsünü yönetir.
+
+Tanstack şunları otomatik yapar : 
+Fetching
+Catching 
+Stale
+Background Sync
+Deduplication
+Mutation 
+
+Redux / Zustand Neden Server State İçin Uygun Değil:
+Sadece state saklar
+Verinin bayat olduğunu bilmez
+Otomatik refetch yapmaz
+Cache invalidation mantığı yoktur
+Async lifecycle’ı anlamaz
+
+
+
+
+Stale Time : Verilerin ne zaman güncel olmadığını belirleyeceği zamanı belirler.
+Cache Time : Kullanılmayan verilerin ne zaman silineceği zamanı belirler.
+
+
+Spinner olunca sayfanın ne zaman yükleneceği , internet mi gitti bilinmez . Ama iskelet ekranı çıkınca sayfanın nasıl olacağını bir nevi siyah beyaz şekilde gösterir . Ve daha az beklendi hissiyatı verir

@@ -1,3 +1,16 @@
+/**
+ * Header Component
+ * 
+ * Uygulamanın üst kısmında yer alan header bileşeni.
+ * Kullanıcı bilgilerini ve profil menüsünü gösterir.
+ * 
+ * Özellikler:
+ * - Kullanıcı adından otomatik initial (baş harf) oluşturma
+ * - Kullanıcı adı ve rolü gösterimi
+ * - Dropdown menü ile profil ve çıkış seçenekleri
+ * - Logout işlemi ve login sayfasına yönlendirme
+ * - Auth store entegrasyonu
+ */
 'use client';
 
 import { useAuthStore } from '../stores/auth';

@@ -1,4 +1,4 @@
-import { StaffData } from '@/types/staff';
+import { StaffData } from '@/interface/staff';
 
 export const staffData: StaffData = {
   members: [

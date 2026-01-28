@@ -1,3 +1,21 @@
+/**
+ * LoginForm Component
+ * 
+ * Kullanıcı giriş formu bileşeni. React Hook Form ve Zod validation kullanır.
+ * 
+ * Özellikler:
+ * - Email ve şifre doğrulama (@neonapps.com zorunluluğu)
+ * - Şifre görünürlük toggle (göster/gizle)
+ * - Otomatik email inputu odaklama
+ * - Loading state ile kullanıcı geri bildirimi
+ * - Toast bildirimleri (başarılı/başarısız giriş)
+ * - Auth store entegrasyonu
+ * - Başarılı girişte ana sayfaya yönlendirme
+ * 
+ * Validasyon Kuralları:
+ * - Email: @neonapps.com ile bitmeli
+ * - Şifre: En az 8 karakter, 1 büyük harf, 1 özel karakter içermeli
+ */
 import { useState, useRef, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -20,6 +38,7 @@ import { toast } from 'sonner';
 import { authService, type LoginCredentials } from '../lib/auth';
 import { useAuthStore } from '../stores/auth';
 
+// Login form için Zod validasyon şeması
 const loginSchema = z.object({
   email: z
     .string()
