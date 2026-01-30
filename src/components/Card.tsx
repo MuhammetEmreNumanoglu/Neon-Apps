@@ -14,7 +14,7 @@
 
 import * as React from "react";
 import { cn } from "../lib/utils";
-import { TrendingUp, TrendingDown, User, LucideIcon } from "lucide-react";
+import { TrendingUp, TrendingDown } from "lucide-react";
 import { Badge } from "./ui/badge";
 
 // --- Base Interface ---

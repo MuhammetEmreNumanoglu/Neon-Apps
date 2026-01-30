@@ -1,113 +1,105 @@
-/**
- * LoginForm Component
- * 
- * Basit, guvenli ve kullanici dostu giris formu.
- */
-import { useState, useRef, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { Eye, EyeOff, Mail, Lock, Loader2 } from 'lucide-react';
+"use client"
+import { useState } from 'react';
+import { z } from 'zod';
+import { Mail, Lock, Loader2, Eye, EyeOff } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { authenticateUser } from '../lib/auth';
+import { useAuthStore } from '../stores/auth';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form';
-import { toast } from 'sonner';
-import { authService } from '../lib/auth';
-import { useAuthStore } from '../stores/auth';
 
 const loginSchema = z.object({
-  email: z.string().email('Invalid email').refine(e => e.endsWith('@neonapps.com'), 'Must be @neonapps.com'),
-  password: z.string().min(8, 'Min 8 chars'),
+    email: z.string()
+        .email('Geçersiz email')
+        .refine(e => e.endsWith('@neonapps.com'), 'Sadece @neonapps.com kabul edilir'),
+
+    password: z.string()
+        .min(8, 'Şifre en az 8 karakter olmalı')
+        // En az bir büyük harf kontrolü
+        .regex(/[A-Z]/, 'En az bir büyük harf içermeli')
+        // En az bir özel karakter kontrolü (semboller)
+        .regex(/[!@#$%^&*(),.?":{}|<>]/, 'En az bir özel karakter içermeli'),
 });
-
-type LoginFormData = z.infer<typeof loginSchema>;
-
 export function LoginForm() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const emailRef = useRef<HTMLInputElement>(null);
-  const router = useRouter();
-  const login = useAuthStore((state) => state.login);
+    const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
 
-  const form = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: { email: '', password: '' },
-  });
+    const router = useRouter();
+    const login = useAuthStore((state) => state.login);
 
-  useEffect(() => emailRef.current?.focus(), []);
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setErrors({}); // Hataları sıfırla
 
-  const onSubmit = async (data: LoginFormData) => {
-    setIsLoading(true);
-    await new Promise(r => setTimeout(r, 1000)); // Simule bekleme
+        const formData = new FormData(e.currentTarget);
+        const data = Object.fromEntries(formData.entries());
 
-    try {
-      const response = await authService.login(data);
-      if (response.success && response.user) {
-        login(response.user);
-        toast.success(`Welcome back, ${response.user.name}!`);
-        router.push('/');
-      } else {
-        toast.error(response.message || 'Login failed');
-      }
-    } catch (e) {
-      toast.error('Unexpected error occurred');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+        // Zod ile Doğrulama
+        const result = loginSchema.safeParse(data);
 
-  return (
-    <div className="w-full max-w-md mx-auto space-y-6">
-      <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold">Welcome Back</h1>
-        <p className="text-muted-foreground">Sign in to your NeonApps account</p>
-      </div>
+        if (!result.success) {
+            const formattedErrors = result.error.flatten().fieldErrors;
+            setErrors({
+                email: formattedErrors.email?.[0],
+                password: formattedErrors.password?.[0]
+            });
+            return;
+        }
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input {...field} ref={emailRef} type="email" placeholder="email@neonapps.com" className="pl-10" disabled={isLoading} />
+        setIsLoading(true);
+        try {
+            const response = await authenticateUser(result.data);
+            if (response.success && response.user) {
+                login(response.user);
+                toast.success(`Hoş geldin, ${response.user.name}!`);
+                router.push('/');
+            } else {
+                toast.error(response.message || 'Giriş başarısız');
+            }
+        } catch {
+            toast.error('Bir hata oluştu');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    return (
+        <div className="w-full max-w-md mx-auto space-y-6">
+            <div className="text-center">
+                <h1 className="text-3xl font-bold">Hoş Geldin</h1>
+                <p className="text-muted-foreground">Hesabına giriş yap</p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Email */}
+                <div className="space-y-1">
+                    <label className="text-sm font-medium">Email</label>
+                    <div className="relative">
+                        <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input name="email" type="email" placeholder="emre@neonapps.com" className="pl-10" />
+                    </div>
+                    {errors.email && <p className="text-xs text-destructive">{errors.email}</p>}
                 </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
 
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input {...field} type={showPassword ? 'text' : 'password'} placeholder="••••••••" className="pl-10 pr-10" disabled={isLoading} />
-                  <Button
-                    type="button" variant="ghost" size="sm"
-                    className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
-                    onClick={() => setShowPassword(!showPassword)} disabled={isLoading}
-                  >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </Button>
+                {/* Password */}
+                <div className="space-y-1">
+                    <label className="text-sm font-medium">Şifre</label>
+                    <div className="relative">
+                        <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                        <Input name="password" type={showPassword ? 'text' : 'password'} className="pl-10 pr-10" />
+                        <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-3">
+                            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                        </button>
+                    </div>
+                    {errors.password && <p className="text-xs text-destructive">{errors.password}</p>}
                 </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
 
-          <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Signing in...</> : 'Sign In'}
-          </Button>
-        </form>
-      </Form>
-    </div>
-  );
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                    {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : 'Giriş Yap'}
+                </Button>
+            </form>
+        </div>
+    );
 }

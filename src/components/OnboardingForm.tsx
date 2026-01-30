@@ -12,7 +12,7 @@
  */
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -59,30 +59,50 @@ export function OnboardingForm() {
     const searchParams = useSearchParams();
 
     // Zustand store'dan gerekli state ve fonksiyonlar
-    const { currentStep, identity, professional, setIdentity, setProfessional, nextStep, previousStep, goToStep, reset } = useOnboardingStore();
+    const { currentStep, goToStep } = useOnboardingStore();
 
     // Basari ekrani kontrolu
     const [isSubmitted, setIsSubmitted] = useState(false);
 
-    // URL ile step senkronizasyonu
+    // Track if URL change is from internal navigation
+    const isInternalChangeRef = useRef(false);
+
+    // Store refs to avoid dependency issues
+    const goToStepRef = useRef(goToStep);
+    const currentStepRef = useRef(currentStep);
+
+    // Keep refs updated
     useEffect(() => {
+        goToStepRef.current = goToStep;
+        currentStepRef.current = currentStep;
+    }, [goToStep, currentStep]);
+
+    // URL ile step senkronizasyonu - sadece URL değiştiğinde (harici değişiklikler)
+    useEffect(() => {
+        // Skip if this was triggered by our own navigation
+        if (isInternalChangeRef.current) {
+            isInternalChangeRef.current = false;
+            return;
+        }
+
         try {
             const urlStep = searchParams.get('step');
             const stepNumber = urlStep ? parseInt(urlStep, 10) : 1;
 
             // Gecerli step araligi: 1-3
-            if (stepNumber >= 1 && stepNumber <= 3 && stepNumber !== currentStep) {
-                goToStep(stepNumber);
+            if (stepNumber >= 1 && stepNumber <= 3 && stepNumber !== currentStepRef.current) {
+                goToStepRef.current(stepNumber);
             }
         } catch (error) {
             // URL parse hatasi durumunda log'la
             console.error('Step parameter parse error:', error);
         }
-    }, [searchParams, goToStep, currentStep]);
+    }, [searchParams]); // Only depend on searchParams
 
     // Step degistiginde URL'i guncelle
     useEffect(() => {
         try {
+            isInternalChangeRef.current = true;
             router.push(`/onboarding?step=${currentStep}`, { scroll: false });
         } catch (error) {
             // Router hatasi durumunda log'la
@@ -135,7 +155,7 @@ export function OnboardingForm() {
                     <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => router.push('/')}
+                        onClick={() => router.push('/home')}
                         className="flex items-center gap-2 text-muted-foreground hover:text-black"
                     >
                         <ArrowLeft className="h-4 w-4" />
@@ -291,7 +311,7 @@ function ProfessionalStep() {
                     {/* Departman */}
                     <div className="space-y-2">
                         <Label htmlFor="department">Department *</Label>
-                        <Select defaultValue={professional.department} onValueChange={(value) => setValue('department', value)}>
+                        <Select defaultValue={professional.department} onValueChange={(value) => setValue('department', value, { shouldValidate: true })}>
                             <SelectTrigger className={errors.department ? 'border-destructive' : ''}>
                                 <SelectValue placeholder="Select your department" />
                             </SelectTrigger>
@@ -309,6 +329,7 @@ function ProfessionalStep() {
                         <Label htmlFor="role">Role Title *</Label>
                         <Input
                             id="role"
+                            type="text"
                             placeholder="e.g., Senior Software Engineer"
                             {...register('role')}
                             className={errors.role ? 'border-destructive' : ''}
@@ -334,6 +355,7 @@ function ProfessionalStep() {
  * Step 3: Confirmation (Onay ve Gonderim)
  */
 function ConfirmationStep({ onSubmit }: { onSubmit: () => void }) {
+    const router = useRouter();
     const { identity, professional, previousStep, reset } = useOnboardingStore();
 
     const handleSubmit = () => {
@@ -357,10 +379,10 @@ function ConfirmationStep({ onSubmit }: { onSubmit: () => void }) {
             toast.success('Form submitted successfully!', {
                 icon: <Download className="h-4 w-4" />
             });
-
             // 3 saniye sonra formu sifirla
             setTimeout(() => {
                 reset();
+                router.push('/home');
             }, 3000);
         } catch (error) {
             // Hata durumunda kullaniciya bildir

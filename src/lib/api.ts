@@ -5,10 +5,12 @@
  * Server-state mapping (Zodiac ekleme) burada yapılır.
  */
 import axios from 'axios';
+import { ConfigService } from './ConfigService';
+import { Announcement } from '../data/dashboard';
 
 // Base URL ve varsayılan header'lar
 const api = axios.create({
-    baseURL: 'https://jsonplaceholder.typicode.com',
+    baseURL: ConfigService.getApiBaseUrl(),
     headers: {
         'Content-Type': 'application/json',
     },
@@ -102,6 +104,19 @@ export const fetchPosts = async (): Promise<Post[]> => {
 export const fetchTodos = async () => {
     const { data } = await api.get('/todos');
     return data;
+};
+
+// Fetch single announcement by ID
+// Since we're using mock data from dashboard.ts, we import and filter it
+export const fetchAnnouncementById = async (id: string): Promise<Announcement | null> => {
+    // Import mock data dynamically
+    const { announcements } = await import('../data/dashboard');
+
+    // Find announcement by ID
+    const announcement = announcements.find(a => a.id === id);
+
+    // Return null if not found (for 404 handling)
+    return announcement || null;
 };
 
 export default api;

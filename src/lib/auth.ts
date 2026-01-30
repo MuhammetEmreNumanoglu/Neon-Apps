@@ -1,58 +1,22 @@
-export interface LoginCredentials {
-  email: string;
-  password: string;
-}
+import type { LoginCredentials, AuthResponse, AuthUser } from '@/types';
 
-export interface AuthResponse {
-  success: boolean;
-  message?: string;
-  user?: {
-    id: string;
-    email: string;
-    name: string;
-    role: 'Admin' | 'Employee';
-    permissions: string[];
-  };
-}
+const MOCK_USERS: AuthUser[] = [
+    { id: '1', email: 'admin@example.com', name: 'Admin User', role: 'Admin', permissions: ['staff', 'settings'] },
+    { id: '2', email: 'emp@example.com', name: 'Employee User', role: 'Employee', permissions: [] }
+];
 
-import { staffData } from '../data/staff';
+export async function authenticateUser(credentials: LoginCredentials): Promise<AuthResponse> {
+    await new Promise(resolve => setTimeout(resolve, 500));
 
-export const authService = {
-  login: async (credentials: LoginCredentials): Promise<AuthResponse> => {
-    await new Promise(resolve => setTimeout(resolve, 1500));
-
-    if (!credentials.email.endsWith('@neonapps.com')) {
-      return {
-        success: false,
-        message: 'Invalid credentials'
-      };
-    }
-
-    if (credentials.password.length < 8) {
-      return {
-        success: false,
-        message: 'Invalid credentials'
-      };
-    }
-
-    const user = staffData.members.find(member => member.email === credentials.email);
+    const user = MOCK_USERS.find(u => u.email === credentials.email);
 
     if (!user) {
-      return {
-        success: false,
-        message: 'Invalid credentials'
-      };
+        return { success: false, message: 'User not found' };
     }
 
-    return {
-      success: true,
-      user: {
-        id: String(user.id),
-        email: user.email,
-        name: user.name,
-        role: user.permissions.includes('admin') ? 'Admin' : 'Employee',
-        permissions: user.permissions
-      }
-    };
-  }
-};
+    if (credentials.password !== 'password') {
+        return { success: false, message: 'Invalid password' };
+    }
+
+    return { success: true, user };
+}
