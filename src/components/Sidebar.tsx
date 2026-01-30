@@ -52,7 +52,7 @@ export function Sidebar({ menuItems }: SidebarProps) {
     const handleLogout = () => {
         try {
             logout();
-            router.push('/login');
+            router.push('/');
         } catch (e) {
             console.error(e);
         }

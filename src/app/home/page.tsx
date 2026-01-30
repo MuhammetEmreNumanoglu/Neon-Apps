@@ -20,7 +20,7 @@ export default function HomePage() {
 
     // Auth redirect
     useEffect(() => {
-        if (hydrated && !isAuthenticated) router.push("/login");
+        if (hydrated && !isAuthenticated) router.push("/");
     }, [hydrated, isAuthenticated, router]);
 
     const downloadUrl = useMemo(() => csvFile ? URL.createObjectURL(csvFile) : null, [csvFile]);

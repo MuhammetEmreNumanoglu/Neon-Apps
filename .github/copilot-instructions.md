@@ -54,7 +54,7 @@ npm run lint     # Run ESLint
 - Login form validates email (must end with @neonapps.com) and password
 - On successful login, user data is stored in Zustand with persist
 - Protected routes check authentication status
-- Logout clears store and redirects to /login
+-  clears store and redirects to /login
 
 ### Role-Based Access
 - User roles: 'Admin' | 'Employee'

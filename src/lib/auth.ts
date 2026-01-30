@@ -1,22 +1,27 @@
 import type { LoginCredentials, AuthResponse, AuthUser } from '@/types';
-
-const MOCK_USERS: AuthUser[] = [
-    { id: '1', email: 'admin@example.com', name: 'Admin User', role: 'Admin', permissions: ['staff', 'settings'] },
-    { id: '2', email: 'emp@example.com', name: 'Employee User', role: 'Employee', permissions: [] }
-];
+import { staffData } from '@/data/staff';
 
 export async function authenticateUser(credentials: LoginCredentials): Promise<AuthResponse> {
     await new Promise(resolve => setTimeout(resolve, 500));
 
-    const user = MOCK_USERS.find(u => u.email === credentials.email);
+    // staffData'dan kullanıcıyı bul
+    const staffMember = staffData.members.find(m => m.email === credentials.email);
 
-    if (!user) {
+    if (!staffMember) {
         return { success: false, message: 'User not found' };
     }
 
-    if (credentials.password !== 'password') {
-        return { success: false, message: 'Invalid password' };
-    }
+    // Şifre kontrolü yok - LoginForm.tsx'teki Zod validation kurallarını sağlayan herhangi bir şifre kabul edilir
+    // (En az 8 karakter, bir büyük harf ve bir özel karakter gerekli)
+
+    // AuthUser formatına çevir
+    const user: AuthUser = {
+        id: staffMember.id.toString(),
+        email: staffMember.email,
+        name: staffMember.name,
+        role: staffMember.permissions.includes('admin') ? 'Admin' : 'Employee',
+        permissions: staffMember.permissions
+    };
 
     return { success: true, user };
 }

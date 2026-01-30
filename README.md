@@ -1,3 +1,60 @@
+Day 10 
+
+* İsimler kodun niyetini açıkça anlatmalıdır
+* Bir ismi anlamak için yoruma ihtiyaç duyulmamalıdır
+* Aynı anlama gelen kelimelerle sahte farklar yaratılmamalıdır
+* İsimler kolay telaffuz edilebilir olmalıdır
+* İsimler kod içinde kolayca aranabilir olmalıdır
+* Kısaltmalar yalnızca herkesçe bilinen durumlarda kullanılmalıdır
+* Bağlam zaten belliyse isim tekrarından kaçınılmalıdır
+* Sınıf isimleri varlıkları temsil etmeli, eylem içermemelidir
+* Fonksiyon isimleri yapılan işi anlatan fiillerden oluşmalıdır
+* Boolean isimler okununca soru gibi anlam vermelidir
+* Negatif ve çift olumsuz isimlendirmelerden kaçınılmalıdır
+* İsimler tek bir sorumluluğu çağrıştırmalıdır
+* Teknik olmayan iş alanı terimleri tercih edilmelidir
+* Geçici, anlamsız veya bağlamdan kopuk isimler kullanılmamalıdır
+* İsimler uzun olabilir, ama belirsiz olmamalıdır
+
+
+Profesyonel bir README’nin amacı şudur:
+Projeyi ilk kez gören birinin birkaç dakika içinde ne olduğunu anlamasını, çalıştırmasını ve güven duymasını sağlamak.
+Bir README’yi profesyonel yapan şeyler
+* Amaç en başta nettirProje ne yapıyor ve neden var, ilk bakışta anlaşılır.
+* Hızlı yön bulma sağlarKodu okumadan projenin nasıl çalıştığı zihinde canlanır.
+* Az ama yeterli bilgi içerirNe eksik adım vardır ne de gereksiz laf.
+* Tutarlı bir yapı izlerBaşlıklar ve bölümler rastgele değildir, tahmin edilebilirdir.
+* Uygulanabilir talimatlar sunarKurulum ve çalıştırma adımları kopyala–çalıştır seviyesindedir.
+* Kapsamı dürüstçe belirtirNe yaptığı kadar ne yapmadığı da bellidir.
+* Hedef kitlesi bellidirKullanıcıya mı, geliştiriciye mi, yoksa ikisine mi hitap ettiği açıktır.
+* Okunabilir bir dil kullanırKısa cümleler, aktif anlatım, süslü ifadeler yoktur.
+* Görsel hiyerarşi güçlüdürBaşlıklar, listeler ve boşluklar sayesinde kolay taranır.
+* Açıklamadan çok örnek verirNasıl kullanıldığını göstermek anlatmaktan üstündür.
+* Güncel ve doğrudurKomutlar, ekran görüntüleri ve linkler kodla uyumludur.
+* Giriş noktaları nettirNasıl çalıştırılır, nasıl yapılandırılır, nasıl katkı verilir kolay bulunur.
+* Profesyonel bir tonu vardırCiddi, sakin ve güven vericidir. Şaka, emoji, argo yoktur.
+* Kodla tutarlıdırREADME’de geçen isimler, komutlar ve terimler kodla birebir örtüşür.
+* Zihinsel yük oluşturmazOkuyan kişi “şimdi ne yapmam gerekiyor?” diye düşünmez.
+
+
+
+
+TypeScript hatalarının build sürecinde asla görmezden gelinmemesi gerekir, çünkü bu hatalar derleyicinin sana şunu söylemesidir:
+“Bu kodun doğru çalışacağına dair garanti veremiyorum.”
+
+TypeScript bir erken uyarı sistemidirBuild sırasında yakalanan hata, production’da çıkacak bir bug’ın önceden haberidir.
+Derleme geçiyorsa sistem güvenilirdirHatalı kodla build almak, güvenlik kemerini kesip araba kullanmak gibidir.
+Runtime hatalarını önlerTypeScript hataları görmezden gelinirse sorunlar kullanıcı tarafında patlar.
+Kodun sözleşmesi bozulmazTipler, kodun kendi iç kontratıdır. Bu kontratı ihlal etmek sistemi belirsiz hale getirir.
+Refactor güvenliği kaybolurTypeScript hatalarını susturmak, refactor sırasında kırılan yerleri gizler.
+Takım içi kalite düşer“Şimdilik geçsin” anlayışı teknik borcu hızla büyütür.
+Hatalar katlanarak artarKüçük bir type hatası, ileride çok daha pahalı bug’lara dönüşür.
+Build deterministik olmaktan çıkarAynı kod farklı ortamlarda farklı davranmaya başlar.
+Production debugging maliyeti artarBuild’te yakalanabilecek bir hata, canlıda saatler süren incelemeye dönüşür.
+TypeScript’in varlık sebebi ortadan kalkarHatalar yok sayılıyorsa TypeScript kullanmanın anlamı kalmaz.
+
+
+
 # Neon Apps
 
 A modern, full featured staff management dashboard built with Next.js 16, TypeScript, and React Query. This application demonstrates best practices for authentication, data fetching, multi step forms, and role based access control.
@@ -61,7 +118,7 @@ Neon Apps is a production ready staff management system that showcases:
 1. Clone the repository:
 ```bash
 git clone https://github.com/MuhammetEmreNumanoglu/Neon-Apps.git
-cd neon apps
+cd Neon-Apps
 ```
 
 2. Install dependencies:
@@ -140,18 +197,24 @@ src/
 The application includes pre configured test accounts for demonstration:
 
 **Administrator:**
-  Email: `admin@test.com`
-  Password: `admin123`
+  Email: `anil.abi@neonapps.com`
+  Password: `1234567aA.`
   Permissions: Full access to all features
 
-**Manager:**
-  Email: `manager@test.com`
-  Password: `manager123`
-  Permissions: Access to staff, statistics, and settings
+**Access Settings :**
+  Email: `can.tasa@neonapps.com`
+  Password: `1234567aA`
+  Permissions: Access to settings
+
+**Staff Settings :**
+  Email: `irem.yasar@neonapps.com`
+  Password: `1234567aA`
+  Permissions: Access to staff
+
 
 **Employee:**
-  Email: `employee@test.com`
-  Password: `employee123`
+  Email: `merve.odabasi@neonapps.com`
+  Password: `1234567aA`
   Permissions: Basic access to dashboard and settings
 
 ### Protected Routes
